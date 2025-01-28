@@ -1,16 +1,22 @@
-# nedapp
+# Flutter-Dart based Web Page
 
-A new Flutter project.
+A Flutter web page made for NedHelps where user can add details and check information regarding Funding.
 
-## Getting Started
+## How to Run Locally
+- Clone the repository
+- Install dependencies with `flutter pub get`
+- Run the app with `flutter run`
 
-This project is a starting point for a Flutter application.
+## Prerequisite
+- Install [Flutter](https://docs.flutter.dev/get-started/install)
+- Install IDE like [VSCode](https://code.visualstudio.com/download) / [Android Studio](https://developer.android.com/studio)
+  
+## Version
+- Fluttter: 3.27.3
+- Dart: 3.6.1
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dependences Used
+- Dio: To get API response
+- flutter_hooks: For State Management
+- flutter_svg: To display SVG Images
+- radio_group_v2: For showing Radio items
