@@ -10,21 +10,19 @@ class RevenueSharedPercentageWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var minPercentage = useState<double>(
-        DataRepository().getMinMaxRevnuePercentage("revenue_percentage_min"));
-    var maxPercentage = useState<double>(DataRepository()
-        .getMinMaxRevnuePercentage("revenue_percentage_max", defaultValue: 8));
+    final repo = useMemoized(() => DataRepository());
+    
     var model =
         useState(DataRepository().getNamedModelData("revenue_percentage"));
     var errMsg = useState<String?>(null);
 
     useEffect(() {
-      if (minPercentage.value < percentage &&
-          percentage < maxPercentage.value) {
+      if (repo.revenueMinPercentage < percentage &&
+          percentage < repo.revenueMaxPercentage) {
         errMsg.value = null;
       } else {
         errMsg.value =
-            "Revenue Share Percentage should be between ${minPercentage.value}% to ${maxPercentage.value}%";
+            "Revenue Share Percentage should be between ${repo.revenueMinPercentage}% to ${repo.revenueMaxPercentage}%";
       }
       return null;
     }, [percentage]);

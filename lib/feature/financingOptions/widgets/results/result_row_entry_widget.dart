@@ -14,14 +14,14 @@ class ResultRowEntryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Expanded(
-          flex: 65,
+          flex: 60,
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(label,
                   style:
                       TextStyle(fontSize: 22, fontWeight: FontWeight.w700)))),
       Expanded(
-          flex: 35,
+          flex: 40,
           child: Align(
               alignment: Alignment.centerRight,
               child: Text(value,

@@ -19,6 +19,7 @@ class DesiredLoanAmountWidget extends HookWidget {
   Widget build(BuildContext context) {
     var model = useState<ApiResponseModel>(
         DataRepository().getNamedModelData("funding_amount"));
+    final repo = useMemoized(() => DataRepository());
     var sliderValue = useState<double>(0);
     var maxValue = useState<double>(0);
     var minValue = useState<double>(0);
@@ -26,10 +27,10 @@ class DesiredLoanAmountWidget extends HookWidget {
 
     useEffect(() {
       // Assigning initial values
-      maxValue.value = DataRepository()
-          .getMaximumValue(annualAmount: annualBusinessRevenue.value);
-      minValue.value = DataRepository()
-          .getMinimumValue(annualAmount: annualBusinessRevenue.value);
+      maxValue.value =
+          repo.getMaximumValue(annualAmount: annualBusinessRevenue.value);
+      minValue.value =
+          repo.getMinimumValue(annualAmount: annualBusinessRevenue.value);
       // Default Value of Slider when annual revenue business amount is changed
       sliderValue.value = (maxValue.value + minValue.value) / 2;
       controller.text = sliderValue.value.toStringAsFixed(0);

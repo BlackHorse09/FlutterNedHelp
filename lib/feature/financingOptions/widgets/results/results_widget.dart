@@ -25,6 +25,7 @@ class ResultsWidget extends HookWidget {
     var totalRevenueShare = useState<double>(0);
     var expectedTransfers = useState<int>(0);
     var feePercentage = useState<double>(DataRepository().getFeesPercentage());
+    var futureDate = useState<DateTime>(DateTime.now());
     useEffect(() {
       totalRevenueShare.value = Calculations.getTotalRevenueShare(
           percentage: feePercentage.value, fundingAmount: fundingAmount.value);
@@ -33,13 +34,18 @@ class ResultsWidget extends HookWidget {
           fundingAmount: fundingAmount.value,
           revenueAmount: annualBusinessRevenue.value,
           revenueShareFrequency: revenueSharedFrequency.value);
+      futureDate.value = Calculations.getFutureData(
+          revenueSharedFrequency: revenueSharedFrequency.value,
+          expectedTransfer: expectedTransfers.value,
+          repaymentDelay: desiredRepaymentDelayDays.value);
       return null;
     }, [
       fundingAmount.value,
       annualBusinessRevenue.value,
       desiredRepaymentDelayDays.value,
       revenueSharedFrequency.value,
-      feePercentage.value
+      feePercentage.value,
+      futureDate.value
     ]);
     return SingleChildScrollView(
         child: Container(
@@ -64,24 +70,24 @@ class ResultsWidget extends HookWidget {
                         label: AppStrings.fees,
                         value:
                             "(${(feePercentage.value * 100).round()}%) \$${(fundingAmount.value * feePercentage.value).round().toString().formatWithCommas()}"),
+                            ResultRowEntryWidget(
+                        label: AppStrings.apr,
+                        value: Calculations.getAprValue(percentage: feePercentage.value, fundingAmount: fundingAmount.value, futureDate: futureDate.value).toStringAsFixed(2)),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 48),
                         child: Divider()),
                     ResultRowEntryWidget(
                         label: AppStrings.totalRevenueShare,
                         value:
-                            "\$${Calculations.getTotalRevenueShare(percentage: feePercentage.value, fundingAmount: fundingAmount.value).round().toString().formatWithCommas()}"),
+                            "\$${totalRevenueShare.value.round().toString().formatWithCommas()}"),
                     ResultRowEntryWidget(
                         label: AppStrings.expectedTransfers,
                         value: "${expectedTransfers.value}"),
                     ResultRowEntryWidget(
                         label: AppStrings.expectedCompletionDate,
                         blueColorValue: true,
-                        value: Calculations.getFutureData(
-                            revenueSharedFrequency:
-                                revenueSharedFrequency.value,
-                            expectedTransfer: expectedTransfers.value,
-                            repaymentDelay: desiredRepaymentDelayDays.value))
+                        value: Calculations.getFutureDateToString(
+                            futureDate: futureDate.value))
                   ])
                 ])));
   }

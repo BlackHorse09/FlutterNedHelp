@@ -9,9 +9,17 @@ class DataRepository {
   DataRepository._internal();
 
   List<ApiResponseModel>? _responseData;
+  double revenueMinPercentage = 0;
+  double revenueMaxPercentage = 0;
 
   Future<List<ApiResponseModel>> getData() async {
-    _responseData ??= await ApiService().fetchData();
+    if (_responseData == null) {
+      _responseData = await ApiService().fetchData();
+      revenueMinPercentage =
+          getMinMaxRevnuePercentage("revenue_percentage_min");
+      revenueMaxPercentage =
+          getMinMaxRevnuePercentage("revenue_percentage_max");
+    }
     return _responseData!;
   }
 
@@ -50,22 +58,27 @@ class DataRepository {
     ApiResponseModel model = getNamedModelData("funding_amount_min");
     if (model.value.isNotEmpty) {
       double minValue = double.tryParse(model.value) ?? 0;
-      if ((annualAmount / 3) > minValue) {
-        return minValue;
-      }
-      return 0;
+      return minValue;
     }
     return 0;
   }
 
   double getMaximumValue({required double annualAmount}) {
     ApiResponseModel model = getNamedModelData("funding_amount_max");
+    double minValue = getMinimumValue(annualAmount: annualAmount);
     if (model.value.isNotEmpty) {
       double maxValue = double.tryParse(model.value) ?? 0;
-      if ((annualAmount / 3) < maxValue) {
-        return (annualAmount / 3);
+      double compareValue = (annualAmount / 3);
+      if (annualAmount <= minValue) {
+        return minValue;
+      } else if (compareValue < maxValue) {
+        if (compareValue < minValue) {
+          return minValue;
+        }
+        return compareValue;
+      } else {
+        return maxValue;
       }
-      return maxValue;
     }
     return 0;
   }

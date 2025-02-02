@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:nedapp/feature/financingOptions/models/api_response_model.dart';
 import 'package:nedapp/feature/financingOptions/singleton/data_repository.dart';
-import 'package:nedapp/utils/app_strings.dart';
 import 'package:nedapp/utils/appstyle.dart';
 
 class DesiredRepaymentDelayWidget extends HookWidget {
@@ -19,7 +18,7 @@ class DesiredRepaymentDelayWidget extends HookWidget {
           flex: 42,
           child: Tooltip(
             message: model.value.tooltip,
-            child: Text(AppStrings.desiredRepaymentDelay,
+            child: Text(model.value.label,
                 style: AppTextStyle.labelStyle),
           )),
       Flexible(

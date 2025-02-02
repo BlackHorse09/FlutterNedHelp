@@ -19,9 +19,10 @@ class AnnualBusinessRevenueWidget extends HookWidget {
   Widget build(BuildContext context) {
     var controller =
         useTextEditingController(text: annualBusinessRevenue.value.toString());
+    final repo = useMemoized(() => DataRepository());
 
     final model = useState<ApiResponseModel>(
-        DataRepository().getNamedModelData("revenue_amount"));
+        repo.getNamedModelData("revenue_amount"));
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Tooltip(
@@ -55,7 +56,7 @@ class AnnualBusinessRevenueWidget extends HookWidget {
                 if (value.isNotEmpty) {
                   if (double.tryParse(value) != 0.0) {
                     annualBusinessRevenue.value = double.tryParse(value) ?? 0.0;
-                    fundingAmount.value = DataRepository().getFundingAmount(
+                    fundingAmount.value = repo.getFundingAmount(
                         annualAmount: annualBusinessRevenue.value);
                   } else {
                     annualBusinessRevenue.value = 0;
